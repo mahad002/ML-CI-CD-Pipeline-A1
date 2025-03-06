@@ -7,6 +7,7 @@ app = Flask(__name__)
 
 # Create a simple model on startup (for demonstration)
 model = RandomForestClassifier(n_estimators=10)
+
 # Train with toy data
 model.fit(np.array([[0, 0], [0, 1], [1, 0], [1, 1]]), [0, 1, 1, 0])
 
@@ -32,4 +33,3 @@ def health():
 if __name__ == '__main__':
     app.run(debug=False, host='0.0.0.0')
 
-    
