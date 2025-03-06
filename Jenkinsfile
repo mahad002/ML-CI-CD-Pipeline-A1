@@ -23,5 +23,14 @@ pipeline {
                 }
             }
         }
+        stage('Notify Admin') {
+            steps {
+                emailext(
+                    subject: "Deployment Successful",
+                    body: "The latest version of the ML project has been deployed.",
+                    to: "mahad112002@gmail.com"
+                )
+            }
+        }
     }
 }
