@@ -11,6 +11,7 @@ model = RandomForestClassifier(n_estimators=10)
 # Train with toy data
 model.fit(np.array([[0, 0], [0, 1], [1, 0], [1, 1]]), [0, 1, 1, 0])
 
+
 @app.route('/predict', methods=['POST'])
 def predict():
     data = request.get_json(force=True)
