@@ -1,19 +1,33 @@
-from flask import Flask, jsonify
-
+# app.py
+from flask import Flask, request, jsonify
+import numpy as np
+from sklearn.ensemble import RandomForestClassifier
 
 app = Flask(__name__)
 
-
-@app.route('/')
-def home():
-    return jsonify({'message': 'Hello, CI/CD Pipeline is working!'}), 200
-
+# Create a simple model on startup (for demonstration)
+model = RandomForestClassifier(n_estimators=10)
+# Train with toy data
+model.fit(np.array([[0, 0], [0, 1], [1, 0], [1, 1]]), [0, 1, 1, 0])
 
 @app.route('/predict', methods=['POST'])
 def predict():
-    # Dummy response for ML model prediction (to be replaced with actual model)
-    return jsonify({'prediction': 'Sample Prediction'}), 200
+    data = request.get_json(force=True)
+    features = data.get('features', [])
+    
+    # Convert to numpy array
+    features_array = np.array(features).reshape(1, -1)
+    
+    # Make prediction
+    prediction = model.predict(features_array).tolist()
+    
+    return jsonify({'prediction': prediction})
+
+
+@app.route('/health', methods=['GET'])
+def health():
+    return jsonify({'status': 'healthy'})
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(debug=False, host='0.0.0.0')
